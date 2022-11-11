@@ -1,9 +1,8 @@
 ﻿using System.Security.Claims;
 
-namespace ApiApplication.Auth
+namespace ApiApplication.Auth;
+
+public interface ICustomAuthenticationTokenService
 {
-    public interface ICustomAuthenticationTokenService
-    {
-        ClaimsPrincipal Read(string value);
-    }
+    ClaimsPrincipal Read(string value);
 }
