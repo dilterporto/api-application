@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApiApplication.Apis.Showtimes.Messages;
+using ApiApplication.Database;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,13 +17,18 @@ namespace ApiApplication.Apis.Showtimes;
 public class ShowtimesController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IShowtimesRepository _showtimesRepository;
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="mediator"></param>
-    public ShowtimesController(IMediator mediator) 
-        => _mediator = mediator;
+    /// <param name="showtimesRepository"></param>
+    public ShowtimesController(IMediator mediator, IShowtimesRepository showtimesRepository)
+    {
+        _mediator = mediator;
+        _showtimesRepository = showtimesRepository;
+    }
 
     /// <summary>
     /// Get all showtimes optionally filtering by date and movie title
@@ -30,11 +36,9 @@ public class ShowtimesController : ControllerBase
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<ShowtimeResponse[]>> GetAllAsync([FromQuery] ShowtimeQueryFilter filter)
-    {
-        return Ok(new List<ShowtimeResponse>());
-    }
-        
+    public async Task<ActionResult<ShowtimeResponse[]>> GetAllAsync([FromQuery] ShowtimeQueryFilter filter) 
+        => Ok(_showtimesRepository.GetCollection());
+
     /// <summary>
     /// Get showtime by id
     /// </summary>

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using MediatR;
 
 namespace ApiApplication.Apis.Showtimes.Messages;
@@ -19,7 +21,9 @@ public class CreateShowtimeRequest : IRequest<ShowtimeResponse>
     /// <summary>
     /// 
     /// </summary>
-    public string Schedule { get; set; }
+    
+    [DefaultValue(new[]{ "10:00", "11:00" })]
+    public IEnumerable<string> Schedule { get; set; }
     /// <summary>
     /// 
     /// </summary>
@@ -42,11 +46,12 @@ public class MovieRequest
     /// <summary>
     /// 
     /// </summary>
+    [DefaultValue("tt1375666")]
     public string ImdbId { get; set; }
     /// <summary>
     /// 
     /// </summary>
-    public string Starts { get; set; }
+    public string Stars { get; set; }
     /// <summary>
     /// 
     /// </summary>

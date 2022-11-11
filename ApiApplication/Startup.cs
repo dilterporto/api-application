@@ -1,8 +1,10 @@
+using ApiApplication.Apis.Showtimes.Factories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ApiApplication.Infrastructure;
+using ApiApplication.Integrations.Imdb;
 
 namespace ApiApplication;
 
@@ -19,7 +21,9 @@ public class Startup
             .ConfigureAspnetApi()
             .ConfigureAuthentication()
             .ConfigureDatabase()
-            .ConfigureSwagger();
+            .ConfigureSwagger()
+            .ConfigureImdbApiClient(Configuration)
+            .AddScoped<IShowtimeFactory, ShowtimeFactory>();
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
