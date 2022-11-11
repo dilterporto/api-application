@@ -7,12 +7,10 @@
   "profiles": {
     "ApiApplication": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "showtime",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:7629;http://localhost:7628"
+      "applicationUrl": "http://localhost:7628"
     },
     "Docker": {
       "commandName": "Docker",
