@@ -36,8 +36,8 @@ public class ShowtimesController : ControllerBase
     /// <param name="filter"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<ActionResult<ShowtimeResponse[]>> GetAllAsync([FromQuery] ShowtimeQueryFilter filter) 
-        => Ok(_showtimesRepository.GetCollection());
+    public async Task<ActionResult<ShowtimeResponse[]>> GetAllAsync([FromQuery] ShowtimeQueryFilter filter)
+        => Ok(await _mediator.Send(new GetShowtimesByFilterQueryRequest(filter)));
 
     /// <summary>
     /// Get showtime by id
@@ -45,10 +45,8 @@ public class ShowtimesController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<ShowtimeResponse[]>> GetByIdAsync([FromRoute] int id)
-    {
-        return Ok(new List<ShowtimeResponse>());
-    }
+    public async Task<ActionResult<ShowtimeResponse[]>> GetByIdAsync([FromRoute] int id) 
+        => Ok(await _mediator.Send(new GetShowtimeByIdQueryRequest(id)));
 
     /// <summary>
     /// Create a new showtime
@@ -70,6 +68,7 @@ public class ShowtimesController : ControllerBase
     [HttpDelete("{id:int}")]
     public async Task<ActionResult<ShowtimeResponse[]>> DeleteByIdAsync([FromRoute] int id)
     {
+        await _mediator.Send(new DeleteShowtimeByIdRequest(id));
         return NoContent();
     }
         
@@ -79,9 +78,10 @@ public class ShowtimesController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<ShowtimeResponse[]>> UpdateByIdAsync([FromRoute] int id)
+    public async Task<ActionResult<ShowtimeResponse[]>> UpdateByIdAsync([FromRoute] int id, [FromBody] ChangeShowtimeByIdRequest request)
     {
-        return Ok(new List<ShowtimeResponse>());
+        var updatedShowtime = await _mediator.Send(request);
+        return Ok(updatedShowtime);
     }
         
     /// <summary>
@@ -90,8 +90,6 @@ public class ShowtimesController : ControllerBase
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpPatch("{id:int}")]
-    public async Task<ActionResult<ShowtimeResponse[]>> PatchByIdAsync([FromRoute] int id)
-    {
-        return Ok(new List<ShowtimeResponse>());
-    }
+    public async Task<ActionResult<ShowtimeResponse[]>> PatchByIdAsync([FromRoute] int id) 
+        => throw new Exception("throws an error for testing error handling");
 }

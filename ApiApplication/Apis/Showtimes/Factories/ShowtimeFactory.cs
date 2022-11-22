@@ -34,7 +34,7 @@ public class ShowtimeFactory : IShowtimeFactory
             if (movieFetched is null)
                 throw new Exception($"movie {createShowtimeRequest.Movie.ImdbId} not found");
 
-            createShowtimeRequest.Movie = _mapper.Map<MovieRequest>(movieFetched);
+            createShowtimeRequest.Movie = _mapper.Map<Movie>(movieFetched);
 
             return _mapper.Map<ShowtimeEntity>(createShowtimeRequest);
         }

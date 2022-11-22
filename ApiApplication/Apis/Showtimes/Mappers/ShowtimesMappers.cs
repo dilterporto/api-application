@@ -10,7 +10,9 @@ public class ShowtimesMappers : Profile
     public ShowtimesMappers()
     {
         CreateMap<CreateShowtimeRequest, ShowtimeEntity>();
-        CreateMap<TitleResponse, MovieRequest>();
-        CreateMap<MovieRequest, MovieEntity>();
+        CreateMap<TitleResponse, Movie>();
+        CreateMap<Movie, MovieEntity>();
+        CreateMap<MovieEntity, Movie>();
+        CreateMap<ShowtimeEntity, ShowtimeResponse>();
     }
 }

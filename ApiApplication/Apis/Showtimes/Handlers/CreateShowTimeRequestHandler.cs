@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ApiApplication.Apis.Showtimes.Factories;
 using ApiApplication.Apis.Showtimes.Messages;
 using ApiApplication.Database;
+using AutoMapper;
 using MediatR;
 
 namespace ApiApplication.Apis.Showtimes.Handlers;
@@ -14,11 +15,13 @@ public class CreateShowTimeRequestHandler : IRequestHandler<CreateShowtimeReques
 {
     private readonly IShowtimeFactory _showtimeFactory;
     private readonly IShowtimesRepository _showtimesRepository;
+    private readonly IMapper _mapper;
 
-    public CreateShowTimeRequestHandler(IShowtimeFactory showtimeFactory, IShowtimesRepository showtimesRepository)
+    public CreateShowTimeRequestHandler(IShowtimeFactory showtimeFactory, IShowtimesRepository showtimesRepository, IMapper mapper)
     {
         _showtimeFactory = showtimeFactory;
         _showtimesRepository = showtimesRepository;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -30,9 +33,8 @@ public class CreateShowTimeRequestHandler : IRequestHandler<CreateShowtimeReques
     public async Task<ShowtimeResponse> Handle(CreateShowtimeRequest request, CancellationToken cancellationToken)
     {
         var showtime = await _showtimeFactory.CreateAsync(request);
+        var showtimeEntity = _showtimesRepository.Add(showtime);
         
-        _showtimesRepository.Add(showtime);
-        
-        return new ShowtimeResponse();
+        return _mapper.Map<ShowtimeResponse>(showtimeEntity);
     }
 }

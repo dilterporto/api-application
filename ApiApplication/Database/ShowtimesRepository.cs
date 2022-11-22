@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiApplication.Database;
 
@@ -21,17 +22,20 @@ public class ShowtimesRepository : IShowtimesRepository
 
     public ShowtimeEntity Delete(int id)
     {
-        throw new System.NotImplementedException();
+        var showTime = _context.Showtimes.Find(id);
+        if (showTime is not null)
+            _context.Showtimes.Remove(showTime);
+        return showTime;
     }
 
     public ShowtimeEntity GetByMovie(Func<IQueryable<MovieEntity>, bool> filter) 
-        => _context.Showtimes.Where((Func<ShowtimeEntity, bool>)filter).FirstOrDefault();
+        => _context.Showtimes.Include(x => x.Movie).Where((Func<ShowtimeEntity, bool>)filter).FirstOrDefault();
 
     public IEnumerable<ShowtimeEntity> GetCollection() 
         => GetCollection(null);
 
     public IEnumerable<ShowtimeEntity> GetCollection(Func<IQueryable<ShowtimeEntity>, bool> filter) 
-        => _context.Showtimes.Where((Func<ShowtimeEntity, bool>)filter);
+        => _context.Showtimes.Include(x => x.Movie);
 
     public ShowtimeEntity Update(ShowtimeEntity showtimeEntity)
     {

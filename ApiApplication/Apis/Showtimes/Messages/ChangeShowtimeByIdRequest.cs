@@ -2,14 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace ApiApplication.Apis.Showtimes.Messages;
 
-/// <summary>
-/// 
-/// </summary>
-public class CreateShowtimeRequest : IRequest<ShowtimeResponse>
+public class ChangeShowtimeByIdRequest : IRequest<ShowtimeResponse>
 {
+    [JsonIgnore]
+    public int Id { get; }
+
+    public ChangeShowtimeByIdRequest(int id, DateTime startDate, DateTime endDate, IEnumerable<string> schedule, Movie movie)
+    {
+        Id = id;
+        StartDate = startDate;
+        EndDate = endDate;
+        Schedule = schedule;
+        Movie = movie;
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -32,28 +42,4 @@ public class CreateShowtimeRequest : IRequest<ShowtimeResponse>
     /// 
     /// </summary>
     public int AuditoriumId { get; set; }
-}
-
-/// <summary>
-/// 
-/// </summary>
-public class Movie
-{
-    /// <summary>
-    /// 
-    /// </summary>
-    public string Title { get; set; }
-    /// <summary>
-    /// 
-    /// </summary>
-    [DefaultValue("tt1375666")]
-    public string ImdbId { get; set; }
-    /// <summary>
-    /// 
-    /// </summary>
-    public string Stars { get; set; }
-    /// <summary>
-    /// 
-    /// </summary>
-    public DateTime ReleaseDate { get; set; }
 }

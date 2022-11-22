@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace ApiApplication.Apis.Showtimes.Validators;
 
-public class MovieRequestValidator : AbstractValidator<MovieRequest>
+public class MovieRequestValidator : AbstractValidator<Movie>
 {
     public MovieRequestValidator()
     {
